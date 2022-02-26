@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace batch_processing
@@ -15,28 +8,24 @@ namespace batch_processing
     {
         private string workingDir;
         private List<string> extPattern;
-        private List<string> checkedPaths;
+        private List<ListItem> checkedItem;
 
         public ListControl()
         {
             InitializeComponent();
 
             extPattern = new();
-            checkedPaths = new();
+            checkedItem = new();
         }
 
         public List<string> getSelectedFiles()
         {
-            //List<string> res = new();
+            List<string> res = new();
 
-            //foreach (var item in checkedListBox1.CheckedItems)
-            //{
-            //    CheckBox temp = item as CheckBox;
-            //    res.Add(temp.Text);
-            //}
+            foreach (var item in checkedItem)
+                res.Add(item.FullName);
 
-            //return res;
-            return checkedPaths;
+            return res;
         }
 
         public void setWorkingDir(string newWD)
@@ -61,7 +50,7 @@ namespace batch_processing
                 return;
 
             DirectoryInfo d = new DirectoryInfo(workingDir);
-            
+
             foreach (string ext in extPattern)
             {
                 FileInfo[] files = d.GetFiles(ext);
@@ -75,14 +64,12 @@ namespace batch_processing
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
+            ListItem newItem = new ListItem(workingDir, checkedListBox1.SelectedItem.ToString());
+
             if (e.NewValue == CheckState.Checked)
-            {
-                checkedPaths.Add(workingDir + "\\" + checkedListBox1.SelectedItem.ToString());
-            }
+                checkedItem.Add(newItem);
             else
-            {
-                checkedPaths.Remove(workingDir + "\\" + checkedListBox1.SelectedItem.ToString());
-            }
+                checkedItem.Remove(newItem);
         }
     }
 }

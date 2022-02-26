@@ -41,17 +41,17 @@ namespace batch_processing
             {
                 activeControl = pictureControl;
                 activeModule = picModule;
-                //tableLayoutPanel1.Controls.Add(pictureControl, 1, 0);
             }
             else if (cbModuleChoice.SelectedIndex == 1)
             {
-                //tableLayoutPanel1.Controls.Add(videoControl, 1, 0);
                 activeControl = videoControl;
                 activeModule = vidModule;
             }
 
-            listControl1.setExtPattern(activeModule.getFilesPattern());
+            fileListManager1.clear();
+            fileListManager1.ExtPattern = activeModule.getFilesPattern();
             tableLayoutPanel1.Controls.Add((UserControl)activeControl, 1, 0);
+            ((UserControl)activeControl).Dock = DockStyle.Fill;
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -59,12 +59,17 @@ namespace batch_processing
             if (folderBrowserDialog1.ShowDialog() != DialogResult.OK)
                 return;
 
-            listControl1.setWorkingDir(folderBrowserDialog1.SelectedPath);
+            fileListManager1.addListControl(folderBrowserDialog1.SelectedPath);
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            activeModule.process(activeControl.getParameters(), listControl1.getSelectedFiles());
+            activeModule.process(activeControl.getParameters(), fileListManager1.getSelectedFiles());
+        }
+
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            fileListManager1.clear();
         }
     }
 }

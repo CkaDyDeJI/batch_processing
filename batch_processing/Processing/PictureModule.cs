@@ -36,8 +36,6 @@ namespace batch_processing
             {
                 Cv2.CvtColor(img, img, ColorConversionCodes.RGB2RGBA);
             }
-            //var alpha = createAlpha(img);
-            //img = addAlpha(img, alpha);
 
             if (param.waterMark)
                 addWaterMark(ref img, param.wmPath, param.position);
