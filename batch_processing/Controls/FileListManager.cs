@@ -39,6 +39,7 @@ namespace batch_processing.Controls
             lists.Clear();
             tableLayoutPanel1.Controls.Clear();
             tableLayoutPanel1.RowCount = 1;
+            first = true;
         }
 
         public void addListControl(string workingDir)

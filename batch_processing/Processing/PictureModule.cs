@@ -17,9 +17,7 @@ namespace batch_processing
             PictureParameters ac_param = (PictureParameters)param;
 
             for (int i = 0; i < paths.Count; ++i)
-            {
                 processFile(paths[i], ac_param, i);
-            }
 
             return;
         }
@@ -32,16 +30,11 @@ namespace batch_processing
         private void processFile(string path, PictureParameters param, int num)
         { 
             var img = Cv2.ImRead(path);
-            if (img.Channels() == 3)
-            {
-                Cv2.CvtColor(img, img, ColorConversionCodes.RGB2RGBA);
-            }
+            if (img.Channels() < 4)
+                Cv2.CvtColor(img, img, ColorConversionCodes.RGB2RGBA, 4);
 
             if (param.waterMark)
                 addWaterMark(ref img, param.wmPath, param.position);
-
-            if (param.rename)
-                path = Path.GetDirectoryName(path) + "\\" + param.name + num.ToString() + Path.GetExtension(path);
 
             if (param.rotate)
                 rotateImg(ref img, param.angle);
@@ -59,11 +52,11 @@ namespace batch_processing
         {
             var watermark = Cv2.ImRead(wmPath, ImreadModes.Unchanged);
 
-            var height = img.Height;
             var width = img.Width;
+            var height = img.Height;
             var blank = Mat.Zeros(img.Rows, img.Cols, MatType.CV_8UC4);
 
-            var M = Cv2.GetRotationMatrix2D(new Point2f(watermark.Cols, watermark.Rows), 0, 1);
+            var M = Cv2.GetRotationMatrix2D(new Point2f(watermark.Width, watermark.Height), 0, 1);
 
             Cv2.WarpAffine(watermark, watermark, M, new Size(width, height));
             Cv2.CvtColor(watermark, watermark, ColorConversionCodes.RGB2RGBA);
@@ -84,47 +77,61 @@ namespace batch_processing
 
         private void edgeImg(ref Mat img)
         {
+            Cv2.CvtColor(img, img, ColorConversionCodes.RGBA2GRAY);
             Cv2.Canny(img, img, 50, 200);
         }
 
-        private Mat addAlpha(Mat src, Mat alpha)
+        private void blackWhiteImg(ref Mat img)
         {
-            if (src.Channels() == 4)
-            {
-                return src;
-            }
-            else if (src.Channels() == 1)
-            {
-                Cv2.CvtColor(src, src, ColorConversionCodes.GRAY2RGB);
-            }
-
-            Mat dst = new Mat(src.Rows, src.Cols, MatType.CV_8UC4);
-
-            Mat[] srcChannels;
-            Mat[] dstChannels = new Mat[4];
-
-            Cv2.Split(src, out srcChannels);
-
-            dstChannels[0] = srcChannels[0];
-            dstChannels[1] = srcChannels[1];
-            dstChannels[2] = srcChannels[2];
-            dstChannels[3] = alpha;
-
-            Cv2.Merge(dstChannels, dst);
-
-            return dst;
+            Cv2.CvtColor(img, img, ColorConversionCodes.RGBA2GRAY);
         }
 
-        private Mat createAlpha(Mat src)
+        private void rangeImg(ref Math img)
         {
-            Mat alpha = Mat.Zeros(src.Rows, src.Cols, MatType.CV_8UC1);
-            Mat gray = Mat.Zeros(src.Rows, src.Cols, MatType.CV_8UC1);
+            Mat low = new Mat(img.Rows, img.Cols, img.Type, new int[] {0, 0, 0, 0});
+            Mat high = new Mat(img.Rows, img.Cols, img.Type, new int[] {150, 150, 150, 255});
 
-            Cv2.CvtColor(src, gray, ColorConversionCodes.RGB2GRAY);
-
-            alpha = 255 - gray;
-
-            return alpha;
+            Cv2.InRange(img, low, high, img);
         }
+
+        // private Mat addAlpha(Mat src, Mat alpha)
+        // {
+        //     if (src.Channels() == 4)
+        //     {
+        //         return src;
+        //     }
+        //     else if (src.Channels() == 1)
+        //     {
+        //         Cv2.CvtColor(src, src, ColorConversionCodes.GRAY2RGB);
+        //     }
+
+        //     Mat dst = new Mat(src.Rows, src.Cols, MatType.CV_8UC4);
+
+        //     Mat[] srcChannels;
+        //     Mat[] dstChannels = new Mat[4];
+
+        //     Cv2.Split(src, out srcChannels);
+
+        //     dstChannels[0] = srcChannels[0];
+        //     dstChannels[1] = srcChannels[1];
+        //     dstChannels[2] = srcChannels[2];
+        //     dstChannels[3] = alpha;
+
+        //     Cv2.Merge(dstChannels, dst);
+
+        //     return dst;
+        // }
+
+        // private Mat createAlpha(Mat src)
+        // {
+        //     Mat alpha = Mat.Zeros(src.Rows, src.Cols, MatType.CV_8UC1);
+        //     Mat gray = Mat.Zeros(src.Rows, src.Cols, MatType.CV_8UC1);
+
+        //     Cv2.CvtColor(src, gray, ColorConversionCodes.RGB2GRAY);
+
+        //     alpha = 255 - gray;
+
+        //     return alpha;
+        // }
     }
 }

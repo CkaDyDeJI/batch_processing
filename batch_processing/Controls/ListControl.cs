@@ -8,7 +8,7 @@ namespace batch_processing
     {
         private string workingDir;
         private List<string> extPattern;
-        private List<ListItem> checkedItem;
+        private List<string> checkedItem;
 
         public ListControl()
         {
@@ -20,12 +20,7 @@ namespace batch_processing
 
         public List<string> getSelectedFiles()
         {
-            List<string> res = new();
-
-            foreach (var item in checkedItem)
-                res.Add(item.FullName);
-
-            return res;
+            return checkedItem;
         }
 
         public void setWorkingDir(string newWD)
@@ -56,20 +51,18 @@ namespace batch_processing
                 FileInfo[] files = d.GetFiles(ext);
 
                 foreach (FileInfo file in files)
-                {
                     checkedListBox1.Items.Add(file.Name);
-                }
             }
         }
 
         private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            ListItem newItem = new ListItem(workingDir, checkedListBox1.SelectedItem.ToString());
+            string item_name = workingDir + "\\" + checkedListBox1.SelectedItem.ToString();
 
             if (e.NewValue == CheckState.Checked)
-                checkedItem.Add(newItem);
+                checkedItem.Add(item_name);
             else
-                checkedItem.Remove(newItem);
+                checkedItem.Remove(item_name);
         }
     }
 }
