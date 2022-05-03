@@ -91,13 +91,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\FileListManager.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\FileListManager.Designer.cs">
-      <DependentUpon>FileListManager.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ListItem.cs" />
     <Compile Include="Controls\ParametersControl.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -131,9 +124,6 @@
     </Compile>
     <Compile Include="Parameters\VideoParameters.cs" />
     <Compile Include="Processing\VideoModule.cs" />
-    <EmbeddedResource Include="Controls\FileListManager.resx">
-      <DependentUpon>FileListManager.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ListControl.resx">
       <DependentUpon>ListControl.cs</DependentUpon>
     </EmbeddedResource>
