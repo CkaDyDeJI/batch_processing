@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 using OpenCvSharp;
 using Numpy;
+using batch_processing.Common.Constants;
 
-namespace batch_processing
+namespace batch_processing.Photo
 {
-    internal class PictureModule : ProcessModule
+    internal class PictureModule : Common.ProcessModule
     {
-        public override void process(Parameters param, List<string> paths)
+        public override void process(Common.Parameters param, List<string> paths)
         {
             PictureParameters ac_param = (PictureParameters)param;
 
@@ -57,7 +58,7 @@ namespace batch_processing
             Cv2.ImWrite(path, img);
         }
 
-        private void addWaterMark(ref Mat img, string wmPath, PictureParameters.Position pos)
+        private void addWaterMark(ref Mat img, string wmPath, Position pos)
         {
             var watermark = Cv2.ImRead(wmPath, ImreadModes.Unchanged);
 
@@ -74,7 +75,7 @@ namespace batch_processing
             Cv2.AddWeighted(watermark, 0.4, img, 1.0, 0, img);
         }
 
-        private void rotateImg(ref Mat img, PictureParameters.Rotate angle)
+        private void rotateImg(ref Mat img, Rotate angle)
         {
             Cv2.Rotate(img, img, (RotateFlags)angle);
         }

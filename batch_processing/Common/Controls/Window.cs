@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace batch_processing
+{
+    internal class Window : Panel
+    {
+        public Window() : base()
+        { }
+
+        public virtual void SetWorkingDir(string path)
+        { }
+
+        public virtual void Run()
+        { }
+    }
+}

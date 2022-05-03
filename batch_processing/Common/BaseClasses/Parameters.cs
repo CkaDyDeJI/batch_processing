@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace batch_processing
+namespace batch_processing.Common
 {
     abstract public class Parameters
     {

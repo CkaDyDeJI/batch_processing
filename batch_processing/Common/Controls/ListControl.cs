@@ -11,31 +11,27 @@ using System.Windows.Forms;
 
 namespace batch_processing
 {
-    public partial class ListControl : UserControl
+    public class ListControl : CheckedListBox
     {
         private string workingDir;
         private List<string> extPattern;
         private List<string> checkedPaths;
 
-        public ListControl()
+        public ListControl() : base()
         {
-            InitializeComponent();
+            //InitializeComponent();
 
             extPattern = new();
             checkedPaths = new();
         }
 
+        public string GetCurrentItemPath()
+        {
+            return workingDir + "\\" + SelectedItem.ToString();
+        }
+
         public List<string> getSelectedFiles()
         {
-            //List<string> res = new();
-
-            //foreach (var item in checkedListBox1.CheckedItems)
-            //{
-            //    CheckBox temp = item as CheckBox;
-            //    res.Add(temp.Text);
-            //}
-
-            //return res;
             return checkedPaths;
         }
 
@@ -55,7 +51,7 @@ namespace batch_processing
 
         private void reloadList()
         {
-            checkedListBox1.Items.Clear();
+            Items.Clear();
 
             if (workingDir == null)
                 return;
@@ -68,7 +64,7 @@ namespace batch_processing
 
                 foreach (FileInfo file in files)
                 {
-                    checkedListBox1.Items.Add(file.Name);
+                    Items.Add(file.Name);
                 }
             }
         }
@@ -77,11 +73,11 @@ namespace batch_processing
         {
             if (e.NewValue == CheckState.Checked)
             {
-                checkedPaths.Add(workingDir + "\\" + checkedListBox1.SelectedItem.ToString());
+                checkedPaths.Add(workingDir + "\\" + SelectedItem.ToString());
             }
             else
             {
-                checkedPaths.Remove(workingDir + "\\" + checkedListBox1.SelectedItem.ToString());
+                checkedPaths.Remove(workingDir + "\\" + SelectedItem.ToString());
             }
         }
     }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace batch_processing
+namespace batch_processing.Video
 {
-    internal class VideoModule : ProcessModule
+    internal class VideoModule : Common.ProcessModule
     {
-        public override void process(Parameters param, List<string> paths)
+        public override void process(Common.Parameters param, List<string> paths)
         {
             VideoParameters ac_param = (VideoParameters)param;
 

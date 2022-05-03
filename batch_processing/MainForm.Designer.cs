@@ -1,6 +1,6 @@
 ﻿namespace batch_processing
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,20 +29,16 @@
         private void InitializeComponent()
         {
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.clickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.cbModuleChoice = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.listControl1 = new batch_processing.ListControl();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.stackedLayout = new batch_processing.StackedLayout();
+            this.workingDirMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.runMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,7 +47,7 @@
             // 
             // toolStripContainer1.ContentPanel
             // 
-            this.toolStripContainer1.ContentPanel.Controls.Add(this.tableLayoutPanel1);
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.stackedLayout);
             this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(800, 423);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
@@ -64,26 +60,13 @@
             // 
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.listControl1, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(800, 423);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clickToolStripMenuItem,
+            this.runMenuItem,
             this.cbModuleChoice,
+            this.workingDirMenu,
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -91,32 +74,10 @@
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // clickToolStripMenuItem
-            // 
-            this.clickToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem4,
-            this.toolStripMenuItem3});
-            this.clickToolStripMenuItem.Name = "clickToolStripMenuItem";
-            this.clickToolStripMenuItem.Size = new System.Drawing.Size(37, 23);
-            this.clickToolStripMenuItem.Text = "File";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuItem2.Text = "Set working Directory";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuItem3.Text = "Exit";
-            // 
             // cbModuleChoice
             // 
             this.cbModuleChoice.Items.AddRange(new object[] {
+            "Стартовый",
             "Изображения",
             "Видео"});
             this.cbModuleChoice.Name = "cbModuleChoice";
@@ -129,36 +90,43 @@
             this.toolStripMenuItem1.Size = new System.Drawing.Size(50, 23);
             this.toolStripMenuItem1.Text = "about";
             // 
-            // listControl1
+            // stackedLayout
             // 
-            this.listControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listControl1.Location = new System.Drawing.Point(3, 3);
-            this.listControl1.Name = "listControl1";
-            this.listControl1.Size = new System.Drawing.Size(394, 417);
-            this.listControl1.TabIndex = 0;
+            this.stackedLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stackedLayout.Location = new System.Drawing.Point(0, 0);
+            this.stackedLayout.Name = "stackedLayout";
+            this.stackedLayout.Size = new System.Drawing.Size(800, 423);
+            this.stackedLayout.TabIndex = 0;
+            this.stackedLayout.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.stackedLayout_PreviewKeyDown);
             // 
-            // toolStripMenuItem4
+            // workingDirMenu
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(187, 22);
-            this.toolStripMenuItem4.Text = "Запустить";
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            this.workingDirMenu.Name = "workingDirMenu";
+            this.workingDirMenu.Size = new System.Drawing.Size(205, 23);
+            this.workingDirMenu.Text = "Установить рабочую директорию";
+            this.workingDirMenu.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
-            // Form1
+            // runMenuItem
+            // 
+            this.runMenuItem.Name = "runMenuItem";
+            this.runMenuItem.Size = new System.Drawing.Size(74, 23);
+            this.runMenuItem.Text = "Запустить";
+            this.runMenuItem.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            // 
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.toolStripContainer1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Form1";
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.PerformLayout();
             this.toolStripContainer1.ResumeLayout(false);
             this.toolStripContainer1.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -168,16 +136,13 @@
         #endregion
 
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private ListControl listControl1;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem clickToolStripMenuItem;
         private System.Windows.Forms.ToolStripComboBox cbModuleChoice;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private StackedLayout stackedLayout;
+        private System.Windows.Forms.ToolStripMenuItem runMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem workingDirMenu;
     }
 }
 
