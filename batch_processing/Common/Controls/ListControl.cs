@@ -21,6 +21,8 @@ namespace batch_processing
         {
             //InitializeComponent();
 
+            ItemCheck += checkedListBox1_ItemCheck;
+
             extPattern = new();
             checkedPaths = new();
         }
@@ -52,6 +54,7 @@ namespace batch_processing
         private void reloadList()
         {
             Items.Clear();
+            checkedPaths.Clear();
 
             if (workingDir == null)
                 return;

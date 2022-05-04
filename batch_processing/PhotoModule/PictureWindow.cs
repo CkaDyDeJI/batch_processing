@@ -52,6 +52,9 @@ namespace batch_processing.Photo
 
         private void selectionChanged(object sender, EventArgs e)
         {
+            if (listCntrol.SelectedItem == null)
+                return;
+
             imageEdit.Image = Image.FromFile(listCntrol.GetCurrentItemPath());
             imageEdit.Show();
         }

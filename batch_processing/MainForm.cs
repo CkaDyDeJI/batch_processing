@@ -74,7 +74,9 @@ namespace batch_processing
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
+            statusLabel.Text = "Processing...";
             stackedLayout.GetСurrentWindow().Run();
+            statusLabel.Text = "Ready";
         }
 
         private void stackedLayout_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
