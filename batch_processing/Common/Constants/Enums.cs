@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace batch_processing.Common.Constants
+﻿namespace batch_processing.Common.Constants
 {
+    public enum ModuleType
+    {
+        Photo,
+        Video,
+        Audio
+    }
+
     public enum Position
     {
-        BL,
-        BR,
-        UL,
-        UR
+        BottomLeft,
+        BottomRight,
+        TopLeft,
+        TopRight
     }
 
     public enum Rotate

@@ -31,5 +31,7 @@ namespace batch_processing.Photo
         public bool negative {  get; set; }
         [Category("Settings"), DisplayName("Edges:")]        
         public bool edges {  get; set; }
+
+        public bool previewPath { get; set; }
     }
 }

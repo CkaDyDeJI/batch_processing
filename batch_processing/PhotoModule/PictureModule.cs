@@ -8,43 +8,60 @@ using System.Threading.Tasks;
 using OpenCvSharp;
 using Numpy;
 using batch_processing.Common.Constants;
+using batch_processing.Common;
 
 namespace batch_processing.Photo
 {
     internal class PictureModule : Common.ProcessModule
     {
+        const string symbols = "abcdefghijklmnopqrstuvwxyz0123456789";
+        static Random rnd = new Random();
+        static List<string> pattern = new List<string> { "*.png", "*.jpg" };
+
         public override void process(Common.Parameters param, List<string> paths)
         {
             PictureParameters ac_param = (PictureParameters)param;
 
             for (int i = 0; i < paths.Count; ++i)
             {
-                processFile(paths[i], ac_param, i);
+                string path = paths[i];
+                
+                if (ac_param.rename)
+                    path = Path.GetDirectoryName(path) + "\\" + ac_param.name + i.ToString() + Path.GetExtension(path);
+
+                processFile(paths[i], path, ac_param);
             }
 
             return;
         }
 
-        public override List<string> getFilesPattern()
+        public override string createPreview(Parameters param, string path)
         {
-            return new List<string> { "*.png", "*.jpg" };
+            PictureParameters ac_param = (PictureParameters)param;
+
+            string output_path = Common.Constants.Paths.TEMP_PATH;
+            if (!Directory.Exists(output_path))
+                Directory.CreateDirectory(output_path);
+
+            return processFile(path, output_path + generateFileName(), ac_param);
         }
 
-        private void processFile(string path, PictureParameters param, int num)
-        { 
+        public override List<string> getFilesPattern()
+        {
+            return pattern;
+        }
+
+        private string processFile(string path, string out_path, PictureParameters param)
+        {
             var img = Cv2.ImRead(path);
+
             if (img.Channels() == 3)
-            {
                 Cv2.CvtColor(img, img, ColorConversionCodes.RGB2RGBA);
-            }
-            //var alpha = createAlpha(img);
-            //img = addAlpha(img, alpha);
+            else if (img.Channels() == 1)
+                Cv2.CvtColor(img, img, ColorConversionCodes.GRAY2RGBA);
 
             if (param.waterMark)
                 addWaterMark(ref img, param.wmPath, param.position);
-
-            if (param.rename)
-                path = Path.GetDirectoryName(path) + "\\" + param.name + num.ToString() + Path.GetExtension(path);
 
             if (param.rotate)
                 rotateImg(ref img, param.angle);
@@ -55,7 +72,19 @@ namespace batch_processing.Photo
             if (param.edges && !param.negative)
                 edgeImg(ref img);
 
-            Cv2.ImWrite(path, img);
+            Cv2.ImWrite(out_path, img);
+
+            return out_path;
+        }
+
+        protected override string generateFileName()
+        {
+            StringBuilder str = new StringBuilder();
+
+            for (int i = 0; i < 16; ++i)
+                str.Append(symbols[rnd.Next(0, symbols.Length)]);
+
+            return "temp_picture_" + str.ToString() + ".png";
         }
 
         private void addWaterMark(ref Mat img, string wmPath, Position pos)
@@ -87,47 +116,8 @@ namespace batch_processing.Photo
 
         private void edgeImg(ref Mat img)
         {
-            Cv2.Canny(img, img, 50, 200);
-        }
-
-        private Mat addAlpha(Mat src, Mat alpha)
-        {
-            if (src.Channels() == 4)
-            {
-                return src;
-            }
-            else if (src.Channels() == 1)
-            {
-                Cv2.CvtColor(src, src, ColorConversionCodes.GRAY2RGB);
-            }
-
-            Mat dst = new Mat(src.Rows, src.Cols, MatType.CV_8UC4);
-
-            Mat[] srcChannels;
-            Mat[] dstChannels = new Mat[4];
-
-            Cv2.Split(src, out srcChannels);
-
-            dstChannels[0] = srcChannels[0];
-            dstChannels[1] = srcChannels[1];
-            dstChannels[2] = srcChannels[2];
-            dstChannels[3] = alpha;
-
-            Cv2.Merge(dstChannels, dst);
-
-            return dst;
-        }
-
-        private Mat createAlpha(Mat src)
-        {
-            Mat alpha = Mat.Zeros(src.Rows, src.Cols, MatType.CV_8UC1);
-            Mat gray = Mat.Zeros(src.Rows, src.Cols, MatType.CV_8UC1);
-
-            Cv2.CvtColor(src, gray, ColorConversionCodes.RGB2GRAY);
-
-            alpha = 255 - gray;
-
-            return alpha;
+            img = img.Canny(50, 200);
+            //Cv2.Canny(img, img, 50, 200);
         }
     }
 }

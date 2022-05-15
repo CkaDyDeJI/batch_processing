@@ -1,4 +1,6 @@
-﻿using System;
+﻿using batch_processing.Common;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +17,19 @@ namespace batch_processing.Video
             return;
         }
 
+        public override string createPreview(Parameters param, string path)
+        {
+            return "";
+        }
+
         public override List<string> getFilesPattern()
         {
             return new List<string> { "*.mp4" };
+        }
+
+        protected override string generateFileName()
+        {
+            throw new NotImplementedException();
         }
     }
 }

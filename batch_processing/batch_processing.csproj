@@ -36,6 +36,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="DevExpress.Data.Desktop.v21.2, Version=21.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -124,6 +125,9 @@
       <DependentUpon>PreviewForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Common\Constants\Enums.cs" />
+    <Compile Include="Common\Controls\ModuleWindow.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Common\Controls\SelectionWindow.cs">
       <SubType>Component</SubType>
     </Compile>
