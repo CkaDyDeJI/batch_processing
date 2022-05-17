@@ -23,6 +23,11 @@ namespace batch_processing
             cbPreview.CheckedChanged += CbPreview_CheckedChanged;
             prGrid.PropertyValueChanged += selectionChanged;
         }
+
+        public ProcessModule GetModule()
+        {
+            return pModule;
+        }
         
         protected void setWorkingModule(ProcessModule module)
         {

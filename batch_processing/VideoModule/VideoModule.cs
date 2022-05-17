@@ -10,6 +10,12 @@ namespace batch_processing.Video
 {
     internal class VideoModule : Common.ProcessModule
     {
+        public VideoModule()
+        {
+            ModuleName = "Video";
+            DefaultExt = ".mp4";
+        }
+
         public override void process(Common.Parameters param, List<string> paths)
         {
             VideoParameters ac_param = (VideoParameters)param;
@@ -25,11 +31,6 @@ namespace batch_processing.Video
         public override List<string> getFilesPattern()
         {
             return new List<string> { "*.mp4" };
-        }
-
-        protected override string generateFileName()
-        {
-            throw new NotImplementedException();
         }
     }
 }

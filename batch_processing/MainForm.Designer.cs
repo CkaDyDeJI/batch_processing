@@ -94,7 +94,8 @@
             this.cbModuleChoice.Items.AddRange(new object[] {
             "Стартовый",
             "Изображения",
-            "Видео"});
+            "Видео",
+            "Аудио"});
             this.cbModuleChoice.Name = "cbModuleChoice";
             this.cbModuleChoice.Size = new System.Drawing.Size(121, 23);
             this.cbModuleChoice.SelectedIndexChanged += new System.EventHandler(this.cbModuleChoice_SelectedIndexChanged);

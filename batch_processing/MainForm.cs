@@ -25,28 +25,37 @@ namespace batch_processing
         
         private void setupWindows()
         {
+            Audio.AudioWindow aud_win = new Audio.AudioWindow();
             Photo.PictureWindow pic_win = new Photo.PictureWindow();
             Video.VideoWindow vid_win = new Video.VideoWindow();
             Common.SelectionWindow sel_win = new Common.SelectionWindow();
 
             SimpleButton ph_bt = new SimpleButton();
             initButton(ph_bt);
-            ph_bt.Text = "Photo";
+            ph_bt.Text = pic_win.GetModule().ModuleName;
             ph_bt.Tag = 1;
             ph_bt.Click += changeButton_Click;
 
             SimpleButton vd_bt = new SimpleButton();
             initButton(vd_bt);
-            vd_bt.Text = "Video";
+            vd_bt.Text = vid_win.GetModule().ModuleName;
             vd_bt.Tag = 2;
             vd_bt.Click += changeButton_Click;
 
+            SimpleButton aud_bt = new SimpleButton();
+            initButton(aud_bt);
+            aud_bt.Text = aud_win.GetModule().ModuleName;
+            aud_bt.Tag = 3;
+            aud_bt.Click += changeButton_Click;
+
             sel_win.AddButton(ph_bt);
             sel_win.AddButton(vd_bt);
+            sel_win.AddButton(aud_bt);
 
             stackedLayout.RegisterNewWindow(sel_win);   //0
             stackedLayout.RegisterNewWindow(pic_win);   //1
             stackedLayout.RegisterNewWindow(vid_win);   //2
+            stackedLayout.RegisterNewWindow(aud_win);   //3
 
             stackedLayout.SetCurrentIndex(0);
         }

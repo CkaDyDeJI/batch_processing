@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 
 using OpenCvSharp;
 using Numpy;
-using batch_processing.Common.Constants;
 using batch_processing.Common;
+using batch_processing.Common.Constants;
 
 namespace batch_processing.Photo
 {
     internal class PictureModule : Common.ProcessModule
     {
-        const string symbols = "abcdefghijklmnopqrstuvwxyz0123456789";
-        static Random rnd = new Random();
         static List<string> pattern = new List<string> { "*.png", "*.jpg" };
+
+        public PictureModule()
+        {
+            ModuleName = "Picture";
+            DefaultExt = ".png";
+        }
 
         public override void process(Common.Parameters param, List<string> paths)
         {
@@ -54,11 +58,8 @@ namespace batch_processing.Photo
         private string processFile(string path, string out_path, PictureParameters param)
         {
             var img = Cv2.ImRead(path);
-
-            if (img.Channels() == 3)
-                Cv2.CvtColor(img, img, ColorConversionCodes.RGB2RGBA);
-            else if (img.Channels() == 1)
-                Cv2.CvtColor(img, img, ColorConversionCodes.GRAY2RGBA);
+            
+            addChannels(ref img);
 
             if (param.waterMark)
                 addWaterMark(ref img, param.wmPath, param.position);
@@ -77,14 +78,12 @@ namespace batch_processing.Photo
             return out_path;
         }
 
-        protected override string generateFileName()
+        private void addChannels(ref Mat img)
         {
-            StringBuilder str = new StringBuilder();
-
-            for (int i = 0; i < 16; ++i)
-                str.Append(symbols[rnd.Next(0, symbols.Length)]);
-
-            return "temp_picture_" + str.ToString() + ".png";
+            if (img.Channels() == 3)
+                Cv2.CvtColor(img, img, ColorConversionCodes.RGB2RGBA);
+            else if (img.Channels() == 1)
+                Cv2.CvtColor(img, img, ColorConversionCodes.GRAY2RGBA);
         }
 
         private void addWaterMark(ref Mat img, string wmPath, Position pos)
@@ -116,8 +115,7 @@ namespace batch_processing.Photo
 
         private void edgeImg(ref Mat img)
         {
-            img = img.Canny(50, 200);
-            //Cv2.Canny(img, img, 50, 200);
+            Cv2.Canny(img, img, 50, 200);
         }
     }
 }
