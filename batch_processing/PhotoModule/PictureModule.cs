@@ -1,20 +1,21 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using batch_processing.Common;
+using batch_processing.Common.Constants;
 
 using OpenCvSharp;
-using Numpy;
-using batch_processing.Common;
-using batch_processing.Common.Constants;
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 
 namespace batch_processing.Photo
 {
     internal class PictureModule : Common.ProcessModule
     {
         static List<string> pattern = new List<string> { "*.png", "*.jpg" };
+        int currentPercentage;
+
+        enum State { PREPARING = 0, ROTATING, HSVING, MIRRORING, NEGATIVING, EDGING, WATERMARKING, BLURRING, WRITING, DONE, UNKNOWN = -1 };
 
         public PictureModule()
         {
@@ -28,6 +29,7 @@ namespace batch_processing.Photo
 
             for (int i = 0; i < paths.Count; ++i)
             {
+                currentPercentage = (int)(((double)i / paths.Count) * 100);
                 string path = paths[i];
                 
                 if (ac_param.rename)
@@ -55,25 +57,80 @@ namespace batch_processing.Photo
             return pattern;
         }
 
+        void OnProgressChanged(string path, State state)
+        {
+            const int num_of_states = State.DONE - State.PREPARING;
+            int current_state = state - State.PREPARING;
+
+            int percentage = (int)(((double)current_state / num_of_states) * 100);
+
+            base.OnProgressChanged(new ProgressEventArgs(path, state.ToString(), currentPercentage, percentage));
+        }
+
         private string processFile(string path, string out_path, PictureParameters param)
         {
             var img = Cv2.ImRead(path);
-            
+
+            //
+            OnProgressChanged(path, State.PREPARING);
+            //
+
             addChannels(ref img);
 
-            if (param.waterMark)
-                addWaterMark(ref img, param.wmPath, param.position);
+            //
+            OnProgressChanged(path, State.ROTATING);
+            //
 
-            if (param.rotate)
-                rotateImg(ref img, param.angle);
+            rotateImg(ref img, param.angle);
+
+            //
+            OnProgressChanged(path, State.HSVING);
+            //
+
+            saturateImg(ref img, param.hue, param.saturation, param.brightness);
+
+            //
+            OnProgressChanged(path, State.MIRRORING);
+            //
+
+            mirrorImg(ref img, param.flip);
+
+            //
+            OnProgressChanged(path, State.NEGATIVING);
+            //
 
             if (param.negative)
                 negativeImg(ref img);
 
+            //
+            OnProgressChanged(path, State.EDGING);
+            //
+
             if (param.edges && !param.negative)
                 edgeImg(ref img);
 
+            //
+            OnProgressChanged(path, State.WATERMARKING);
+            //
+
+            blurImg(ref img, param.blur);
+
+            //
+            OnProgressChanged(path, State.BLURRING);
+            //
+
+            if (param.waterMark)
+                addWaterMark(ref img, param.wmPath, param.position);
+
+            //
+            OnProgressChanged(path, State.WRITING);
+            //
+
             Cv2.ImWrite(out_path, img);
+
+            //
+            OnProgressChanged(path, State.DONE);
+            //
 
             return out_path;
         }
@@ -88,34 +145,86 @@ namespace batch_processing.Photo
 
         private void addWaterMark(ref Mat img, string wmPath, Position pos)
         {
+            if (!File.Exists(wmPath))
+                return;
+
             var watermark = Cv2.ImRead(wmPath, ImreadModes.Unchanged);
 
             var height = img.Height;
             var width = img.Width;
-            var blank = Mat.Zeros(img.Rows, img.Cols, MatType.CV_8UC4);
+            var blank = (Mat)Mat.Zeros(height, width, MatType.CV_8UC4);
 
-            var M = Cv2.GetRotationMatrix2D(new Point2f(watermark.Cols, watermark.Rows), 0, 1);
+            int x_start_pos = 0, y_start_pos = 0;
 
-            Cv2.WarpAffine(watermark, watermark, M, new Size(width, height));
-            Cv2.CvtColor(watermark, watermark, ColorConversionCodes.RGB2RGBA);
-            Cv2.Add(blank, watermark, watermark);
+            if (pos == Position.TopRight)
+            {
+                x_start_pos = Math.Max(0, width - watermark.Width);
+                y_start_pos = 0;
+            }
+            else if (pos == Position.BottomRight)
+            {
+                x_start_pos = Math.Max(0, width - watermark.Width);
+                y_start_pos = Math.Max(0, height - watermark.Height);
+            }
+            else if (pos == Position.BottomLeft)
+            {
+                x_start_pos = 0;
+                y_start_pos = Math.Max(0, height - watermark.Height);
+            }
+
+            watermark.CopyTo(blank[new Rect(x_start_pos, y_start_pos, watermark.Width, watermark.Height)]);
+
+            Cv2.CvtColor(img, img, ColorConversionCodes.RGB2RGBA);
+            Cv2.CvtColor(blank, watermark, ColorConversionCodes.RGB2RGBA);
 
             Cv2.AddWeighted(watermark, 0.4, img, 1.0, 0, img);
         }
 
         private void rotateImg(ref Mat img, Rotate angle)
         {
-            Cv2.Rotate(img, img, (RotateFlags)angle);
+            if (angle != Rotate.NONE)
+                Cv2.Rotate(img, img, (RotateFlags)angle);
         }
 
         private void negativeImg(ref Mat img)
         {
-            img = 255 - img;
+            Cv2.CvtColor(img, img, ColorConversionCodes.RGBA2GRAY);
+
+            img = ~img;
+
+            Cv2.CvtColor(img, img, ColorConversionCodes.GRAY2RGBA);
         }
 
         private void edgeImg(ref Mat img)
         {
-            Cv2.Canny(img, img, 50, 200);
+            img = img.Canny(50, 200);
+        }
+
+        private void saturateImg(ref Mat img, double hue_param, double sat_param, double br_param)
+        {
+            Cv2.CvtColor(img, img, ColorConversionCodes.RGB2HSV);
+            Cv2.Split(img, out Mat[] mv);
+
+            mv[0] = mv[0] * hue_param;
+            mv[1] = mv[1] * sat_param;
+            mv[2] = mv[2] * br_param;
+
+            Cv2.Merge(mv, img);
+            Cv2.CvtColor(img, img, ColorConversionCodes.HSV2RGB);
+        }
+
+        private void mirrorImg(ref Mat img, Flip flip)
+        {
+            if (flip == Flip.NONE)
+                return;
+
+            Cv2.Flip(img, img, (FlipMode)flip);
+        }
+
+        private void blurImg(ref Mat img, int blur_num)
+        {
+            blur_num |= 0b1;
+            Cv2.GaussianBlur(img, img, new Size(blur_num, blur_num), 0);
         }
     }
 }

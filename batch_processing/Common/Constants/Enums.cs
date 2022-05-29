@@ -19,6 +19,15 @@
     {
         ROTATE_90,
         ROTATE_180,
-        ROTATE_90_NEG
+        ROTATE_90_NEG,
+        NONE
+    }
+
+    public enum Flip
+    {
+        HORIZONTAL = 0,
+        VERTICAL = 1,
+        BOTH = -1,
+        NONE = -2
     }
 }

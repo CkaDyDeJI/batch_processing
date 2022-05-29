@@ -19,12 +19,6 @@ namespace batch_processing.Audio
 
         public override void Run()
         {
-            //if (!aParams.rename)
-            //{
-            //    if (MessageBox.Show("You are about to rewrite all original files. Are you sure?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
-            //        return;
-            //}
-
             base.Run();
         }
 

@@ -1,19 +1,15 @@
 ﻿using DevExpress.XtraEditors;
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace batch_processing
 {
     public partial class MainForm : Form
     {
+        
+
         public MainForm()
         {
             InitializeComponent();
@@ -60,17 +56,37 @@ namespace batch_processing
             stackedLayout.SetCurrentIndex(0);
         }
 
+        private void progress_Changed(object sender, Common.ProcessModule.ProgressEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(e.FileName))
+                statusLabel.Text = e.FileName;
+            if (!string.IsNullOrEmpty(e.FileName))
+                fileStatusLabel.Text = e.State;
+            if (e.CommonProgress != -1)
+                firstProgress.Value = e.CommonProgress;
+            secondProgress.Value = e.FileProgress;
+        }
+
         private void changeButton_Click(object sender, EventArgs e)
         {
             int module_index = (int)((SimpleButton)sender).Tag;
             
             cbModuleChoice.SelectedIndex = module_index;
+
+            (stackedLayout.GetСurrentWindow() as ModuleWindow).OnProgressChanged -= progress_Changed;
             stackedLayout.SetCurrentIndex(module_index);
+            (stackedLayout.GetСurrentWindow() as ModuleWindow).OnProgressChanged += progress_Changed;
         }
 
         private void cbModuleChoice_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (stackedLayout.GetСurrentWindow() is not Common.SelectionWindow)
+                (stackedLayout.GetСurrentWindow() as ModuleWindow).OnProgressChanged -= progress_Changed;
+
             stackedLayout.SetCurrentIndex(cbModuleChoice.SelectedIndex);
+
+            if (stackedLayout.GetСurrentWindow() is not Common.SelectionWindow)
+                (stackedLayout.GetСurrentWindow() as ModuleWindow).OnProgressChanged += progress_Changed;
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -84,7 +100,15 @@ namespace batch_processing
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
             statusLabel.Text = "Processing...";
+            firstProgress.Visible = true;
+            secondProgress.Visible = true;
+            fileStatusLabel.Visible = true;
+
             stackedLayout.GetСurrentWindow().Run();
+
+            fileStatusLabel.Visible = false;
+            firstProgress.Visible = false;
+            secondProgress.Visible = false;
             statusLabel.Text = "Ready";
         }
 

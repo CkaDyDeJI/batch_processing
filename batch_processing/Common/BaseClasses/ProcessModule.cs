@@ -18,6 +18,30 @@ namespace batch_processing.Common
         public string ModuleName;
         public string DefaultExt;
 
+        public event EventHandler<ProgressEventArgs> ProgressChanged;
+
+        public virtual void OnProgressChanged(ProgressEventArgs e)
+        {
+            ProgressChanged(this, e);
+        }
+
+        public class ProgressEventArgs : EventArgs
+        {
+            public string FileName { get; private set; }
+            public string State { get; private set; }
+            public int CommonProgress { get; private set; }
+            public int FileProgress { get; private set; }
+
+
+            public ProgressEventArgs(string t1, string t2, int t3, int t4)
+            {
+                FileName = t1;
+                State = t2;
+                CommonProgress = t3;
+                FileProgress = t4;
+            }
+        }
+
         protected string generateFileName()
         {
             StringBuilder str = new StringBuilder();

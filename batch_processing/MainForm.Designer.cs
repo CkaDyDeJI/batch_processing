@@ -29,21 +29,24 @@
         private void InitializeComponent()
         {
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.firstProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.secondProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.stackedLayout = new batch_processing.StackedLayout();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.runMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cbModuleChoice = new System.Windows.Forms.ToolStripComboBox();
             this.workingDirMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.stackedLayout = new batch_processing.StackedLayout();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.fileStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStripContainer1
@@ -67,6 +70,44 @@
             // toolStripContainer1.TopToolStripPanel
             // 
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusLabel,
+            this.firstProgress,
+            this.fileStatusLabel,
+            this.secondProgress});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 0);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.TabIndex = 0;
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.BackColor = System.Drawing.Color.Transparent;
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // firstProgress
+            // 
+            this.firstProgress.Name = "firstProgress";
+            this.firstProgress.Size = new System.Drawing.Size(100, 16);
+            // 
+            // secondProgress
+            // 
+            this.secondProgress.Name = "secondProgress";
+            this.secondProgress.Size = new System.Drawing.Size(100, 16);
+            // 
+            // stackedLayout
+            // 
+            this.stackedLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stackedLayout.Location = new System.Drawing.Point(0, 0);
+            this.stackedLayout.Name = "stackedLayout";
+            this.stackedLayout.Size = new System.Drawing.Size(800, 401);
+            this.stackedLayout.TabIndex = 0;
+            this.stackedLayout.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.stackedLayout_PreviewKeyDown);
             // 
             // menuStrip1
             // 
@@ -113,30 +154,10 @@
             this.toolStripMenuItem1.Size = new System.Drawing.Size(50, 23);
             this.toolStripMenuItem1.Text = "about";
             // 
-            // stackedLayout
+            // fileStatusLabel
             // 
-            this.stackedLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stackedLayout.Location = new System.Drawing.Point(0, 0);
-            this.stackedLayout.Name = "stackedLayout";
-            this.stackedLayout.Size = new System.Drawing.Size(800, 401);
-            this.stackedLayout.TabIndex = 0;
-            this.stackedLayout.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.stackedLayout_PreviewKeyDown);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 0);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
-            this.statusStrip1.TabIndex = 0;
-            // 
-            // statusLabel
-            // 
-            this.statusLabel.BackColor = System.Drawing.Color.Transparent;
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(0, 17);
+            this.fileStatusLabel.Name = "fileStatusLabel";
+            this.fileStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // MainForm
             // 
@@ -154,10 +175,10 @@
             this.toolStripContainer1.TopToolStripPanel.PerformLayout();
             this.toolStripContainer1.ResumeLayout(false);
             this.toolStripContainer1.PerformLayout();
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -174,6 +195,9 @@
         private System.Windows.Forms.ToolStripMenuItem workingDirMenu;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.ToolStripProgressBar firstProgress;
+        private System.Windows.Forms.ToolStripProgressBar secondProgress;
+        private System.Windows.Forms.ToolStripStatusLabel fileStatusLabel;
     }
 }
 
