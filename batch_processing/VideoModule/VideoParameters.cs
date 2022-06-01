@@ -11,8 +11,6 @@ namespace batch_processing.Video
 {
     internal class VideoParameters : Common.Parameters
     {
-        [Category("Convert"), DisplayName("Convert")]
-        public Common.Constants.Convert convert { get; set; } = Common.Constants.Convert.NONE;
         [Category("Change speed"), DisplayName("Speed multiplier")]
         public int speedUp { get; set; } = 1;
         [Category("Delete audio"), DisplayName("deletion")]

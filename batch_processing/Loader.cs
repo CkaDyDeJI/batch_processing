@@ -15,7 +15,7 @@ namespace batch_processing
         {
             LoadServices();
             LoadSkeleton();
-            GetFfmPeg();
+            GetAdditionalLibraries();
             Run();
         }
 
@@ -27,7 +27,8 @@ namespace batch_processing
         {
             _mainMenu = new MainForm();
         }
-        void GetFfmPeg()
+
+        void GetAdditionalLibraries()
         {
             FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
         }

@@ -25,8 +25,6 @@ namespace batch_processing
             listCntrol.SelectedIndexChanged += selectionChanged;
             cbPreview.CheckedChanged += CbPreview_CheckedChanged;
             prGrid.PropertyValueChanged += selectionChanged;
-
-            isTaken = false;
         }
 
         public ProcessModule GetModule()
@@ -164,7 +162,6 @@ namespace batch_processing
             base.Dispose(disposing);
         }
 
-        bool isTaken;
         private string currentFilterPath;
         private CheckBox cbPreview;
         private CheckBox cbFilters;
@@ -174,6 +171,6 @@ namespace batch_processing
         private SplitContainer mainPanel;
         private SplitContainer innerPanel;
         private ListControl listCntrol;
-        private PropertyGrid prGrid;
+        protected PropertyGrid prGrid;
     }
 }

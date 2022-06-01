@@ -16,6 +16,12 @@ namespace batch_processing.Video
             base.setWorkingModule(_vModule);
             base.setWorkingParams(_vParams);
             base.disablePreview();
+            base.prGrid.PropertyValueChanged += PrGrid_PropertyValueChanged;
+        }
+
+        private void PrGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            //TODO
         }
 
         public override void Run()
