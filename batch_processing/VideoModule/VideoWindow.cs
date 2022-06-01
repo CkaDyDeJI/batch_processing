@@ -15,12 +15,11 @@ namespace batch_processing.Video
 
             base.setWorkingModule(_vModule);
             base.setWorkingParams(_vParams);
+            base.disablePreview();
         }
 
         public override void Run()
         {
-
-
             base.Run();
         }
 

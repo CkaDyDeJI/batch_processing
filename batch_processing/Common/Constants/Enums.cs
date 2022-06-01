@@ -30,4 +30,19 @@
         BOTH = -1,
         NONE = -2
     }
+
+    public enum Convert
+    {
+        MP4,
+        MKV,
+        NONE = -1
+    }
+
+    public enum CutPosition
+    {
+        START,
+        END,
+        MIDDLE,
+        NONE = -1
+    }
 }
