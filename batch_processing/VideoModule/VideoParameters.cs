@@ -17,19 +17,19 @@ namespace batch_processing.Video
         public bool deleteAudio { get; set; } = false;
         [Category("Reverse"), DisplayName("reverse")]
         public bool reverse { get; set; } = false;
-        [Category("Set Framerate"), DisplayName("framerate")]
-        public int framerate { get; set; } = 30;
-        [Category("Set Framerate"), DisplayName("enable")]
-        public bool changeFramerate { get; set; } = false;
+        [Category("Framerate"), DisplayName("framerate")]
+        public int framerate { get; set; } = -1;
         [Category("Cut"), DisplayName("cut from")]
         public int cutStart { get; set; } = 0;
         [Category("Cut"), DisplayName("cut length (sec)")]
-        public int cutLength { get; set; } = -1; 
-        [Category("Set codec"), DisplayName("Codec")]
+        public int cutLength { get; set; } = -1;
+        [Category("Cut"), DisplayName("cut seconds from end")]
+        public int cutFromEnd { get; set; } = -1;
+        [Category("Сodec"), DisplayName("set codec")]
         public VideoCodec codec { get; set; } = VideoCodec.h264;
-        [Category("Set codec"), DisplayName("enable")]
+        [Category("Codec"), DisplayName("enable")]
         public bool changeCodec { get; set; } = false;
-        [Category("Set Bitrate"), DisplayName("bitrate")]
+        [Category("Bitrate"), DisplayName("set bitrate")]
         public int bitrate { get; set; } = -1;
         [Category("Watermark"), DisplayName("path")]
         [EditorAttribute(typeof(System.Windows.Forms.Design.FileNameEditor), typeof(System.Drawing.Design.UITypeEditor))]

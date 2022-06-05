@@ -34,6 +34,8 @@ namespace batch_processing.Photo
                 
                 if (ac_param.rename)
                     path = Path.GetDirectoryName(path) + "\\" + ac_param.name + i.ToString() + Path.GetExtension(path);
+                else
+                    path = Path.GetDirectoryName(path) + "\\" + Path.GetFileNameWithoutExtension(path) + i.ToString() + Path.GetExtension(path);
 
                 processFile(paths[i], path, ac_param);
             }
@@ -41,8 +43,11 @@ namespace batch_processing.Photo
             return;
         }
 
-        public override string createPreview(Parameters param, string path)
+        public override string createPreview(Parameters param, string path, bool filters)
         {
+            if (!filters)
+                return path;
+
             PictureParameters ac_param = (PictureParameters)param;
 
             string output_path = Common.Constants.Paths.TEMP_PATH;
@@ -125,6 +130,8 @@ namespace batch_processing.Photo
             //
             OnProgressChanged(path, State.WRITING);
             //
+
+            File.Delete(path);
 
             Cv2.ImWrite(out_path, img);
 

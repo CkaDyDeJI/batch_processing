@@ -52,6 +52,12 @@ namespace batch_processing
             cbPreview.Visible = false;
         }
 
+        protected void disableFiltering()
+        {
+            cbFilters.Checked = false;
+            cbFilters.Visible = false;
+        }
+
         private void CbPreview_CheckedChanged(object sender, EventArgs e)
         {
             innerPanel.Panel1Collapsed = !cbPreview.Checked;
@@ -87,20 +93,12 @@ namespace batch_processing
             imageEdit.Image?.Dispose();
             imageEdit.Image = null;
             
-            if (cbFilters.Checked)
-            {
-                currentFilterPath = pModule.createPreview(pParams, listCntrol.GetCurrentItemPath());
-                imageEdit.Image = Image.FromFile(currentFilterPath);
-            }
-            else
-            {
-                currentFilterPath = "";
-                imageEdit.Image = Image.FromFile(listCntrol.GetCurrentItemPath());
-            }
+            currentFilterPath = pModule.createPreview(pParams, listCntrol.GetCurrentItemPath(), cbFilters.Checked);
+            imageEdit.Image = new Bitmap(currentFilterPath);
 
             imageEdit.Show();
 
-            if (!string.IsNullOrEmpty(temp))
+            if (!String.IsNullOrEmpty(temp) && temp != currentFilterPath)
                 File.Delete(temp);
         }
 

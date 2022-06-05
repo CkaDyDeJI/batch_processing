@@ -32,15 +32,15 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.firstProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.fileStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.secondProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.stackedLayout = new batch_processing.StackedLayout();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.runMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cbModuleChoice = new System.Windows.Forms.ToolStripComboBox();
             this.workingDirMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.fileStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.stackedLayout = new batch_processing.StackedLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -95,19 +95,15 @@
             this.firstProgress.Name = "firstProgress";
             this.firstProgress.Size = new System.Drawing.Size(100, 16);
             // 
+            // fileStatusLabel
+            // 
+            this.fileStatusLabel.Name = "fileStatusLabel";
+            this.fileStatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
             // secondProgress
             // 
             this.secondProgress.Name = "secondProgress";
             this.secondProgress.Size = new System.Drawing.Size(100, 16);
-            // 
-            // stackedLayout
-            // 
-            this.stackedLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.stackedLayout.Location = new System.Drawing.Point(0, 0);
-            this.stackedLayout.Name = "stackedLayout";
-            this.stackedLayout.Size = new System.Drawing.Size(800, 401);
-            this.stackedLayout.TabIndex = 0;
-            this.stackedLayout.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.stackedLayout_PreviewKeyDown);
             // 
             // menuStrip1
             // 
@@ -136,7 +132,8 @@
             "Стартовый",
             "Изображения",
             "Видео",
-            "Аудио"});
+            "Аудио",
+            "Документы"});
             this.cbModuleChoice.Name = "cbModuleChoice";
             this.cbModuleChoice.Size = new System.Drawing.Size(121, 23);
             this.cbModuleChoice.SelectedIndexChanged += new System.EventHandler(this.cbModuleChoice_SelectedIndexChanged);
@@ -154,10 +151,14 @@
             this.toolStripMenuItem1.Size = new System.Drawing.Size(50, 23);
             this.toolStripMenuItem1.Text = "about";
             // 
-            // fileStatusLabel
+            // stackedLayout
             // 
-            this.fileStatusLabel.Name = "fileStatusLabel";
-            this.fileStatusLabel.Size = new System.Drawing.Size(0, 17);
+            this.stackedLayout.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.stackedLayout.Location = new System.Drawing.Point(0, 0);
+            this.stackedLayout.Name = "stackedLayout";
+            this.stackedLayout.Size = new System.Drawing.Size(800, 401);
+            this.stackedLayout.TabIndex = 0;
+            this.stackedLayout.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.stackedLayout_PreviewKeyDown);
             // 
             // MainForm
             // 

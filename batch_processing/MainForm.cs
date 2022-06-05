@@ -1,4 +1,4 @@
-﻿using DevExpress.XtraEditors;
+﻿using DevExpress.XtraEditors; 
 
 using System;
 using System.Drawing;
@@ -6,10 +6,9 @@ using System.Windows.Forms;
 
 namespace batch_processing
 {
+    
     public partial class MainForm : Form
     {
-        
-
         public MainForm()
         {
             InitializeComponent();
@@ -24,6 +23,7 @@ namespace batch_processing
             Audio.AudioWindow aud_win = new Audio.AudioWindow();
             Photo.PictureWindow pic_win = new Photo.PictureWindow();
             Video.VideoWindow vid_win = new Video.VideoWindow();
+            Doc.DocWindow doc_win = new Doc.DocWindow();
             Common.SelectionWindow sel_win = new Common.SelectionWindow();
 
             SimpleButton ph_bt = new SimpleButton();
@@ -44,14 +44,23 @@ namespace batch_processing
             aud_bt.Tag = 3;
             aud_bt.Click += changeButton_Click;
 
+            SimpleButton doc_bt = new SimpleButton();
+            initButton(doc_bt);
+            doc_bt.Text = doc_win.GetModule().ModuleName;
+            doc_bt.Tag = 4;
+            doc_bt.Click += changeButton_Click;
+
             sel_win.AddButton(ph_bt);
             sel_win.AddButton(vd_bt);
             sel_win.AddButton(aud_bt);
+            sel_win.AddButton(doc_bt);
+            sel_win.EndInit();
 
             stackedLayout.RegisterNewWindow(sel_win);   //0
             stackedLayout.RegisterNewWindow(pic_win);   //1
             stackedLayout.RegisterNewWindow(vid_win);   //2
             stackedLayout.RegisterNewWindow(aud_win);   //3
+            stackedLayout.RegisterNewWindow(doc_win);   //4
 
             stackedLayout.SetCurrentIndex(0);
         }

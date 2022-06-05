@@ -9,7 +9,7 @@ namespace batch_processing.Common
     abstract class ProcessModule
     {
         abstract public void process(Parameters param, List<string> paths);
-        abstract public string createPreview(Parameters param, string path);
+        abstract public string createPreview(Parameters param, string path, bool filters);
         abstract public List<string> getFilesPattern();
 
         private static Random rnd = new Random();

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Forms;
 
 namespace batch_processing.Audio
 {
@@ -19,6 +15,11 @@ namespace batch_processing.Audio
 
         public override void Run()
         {
+            if (!aParams.rename)
+            {
+                MessageBox.Show("You haven't changed a file names. They are will be written with number postfix (0, 1 and so on).", "Warning", MessageBoxButtons.OK);
+            }
+
             base.Run();
         }
 

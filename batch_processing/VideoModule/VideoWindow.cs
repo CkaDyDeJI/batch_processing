@@ -15,17 +15,16 @@ namespace batch_processing.Video
 
             base.setWorkingModule(_vModule);
             base.setWorkingParams(_vParams);
-            base.disablePreview();
-            base.prGrid.PropertyValueChanged += PrGrid_PropertyValueChanged;
-        }
-
-        private void PrGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-        {
-            //TODO
+            base.disableFiltering();
         }
 
         public override void Run()
         {
+            if (!_vParams.rename)
+            {
+                MessageBox.Show("You haven't changed a file names. They are will be written with number postfix (0, 1 and so on).", "Warning", MessageBoxButtons.OK);
+            }
+
             base.Run();
         }
 

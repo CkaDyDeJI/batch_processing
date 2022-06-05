@@ -24,7 +24,7 @@ namespace batch_processing.Video
         public VideoModule()
         {
             ModuleName = "Video";
-            DefaultExt = ".mp4";
+            DefaultExt = ".png";
         }
 
         public override void process(Common.Parameters param, List<string> paths)
@@ -50,9 +50,11 @@ namespace batch_processing.Video
             return;
         }
 
-        private async void processFile(string input_path, string output_path, VideoParameters param)
+        private void processFile(string input_path, string output_path, VideoParameters param)
         {
-            IMediaInfo inputFile = await FFmpeg.GetMediaInfo(input_path);
+            var task = Task.Run(() => FFmpeg.GetMediaInfo(input_path));
+            task.Wait();
+            IMediaInfo inputFile = task.Result;
 
             //
             OnProgressChanged(input_path, State.PREPARING);
@@ -76,8 +78,15 @@ namespace batch_processing.Video
 
             if (param.cutLength != -1)
             {
-                videoStream.Split(new TimeSpan(0, 0, param.cutStart), new TimeSpan(0, 0, param.cutLength));
-                audioStream.Split(new TimeSpan(0, 0, param.cutStart), new TimeSpan(0, 0, param.cutLength));
+                videoStream.Split(TimeSpan.FromSeconds(param.cutStart), TimeSpan.FromSeconds(param.cutLength));
+                audioStream.Split(TimeSpan.FromSeconds(param.cutStart), TimeSpan.FromSeconds(param.cutLength));
+            } 
+            else if (param.cutFromEnd != -1)
+            {
+                int length_time = (int)videoStream.Duration.TotalSeconds - param.cutFromEnd;
+
+                videoStream.Split(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(length_time));
+                audioStream.Split(TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(length_time));
             }
 
             //
@@ -104,7 +113,7 @@ namespace batch_processing.Video
             OnProgressChanged(input_path, State.FRAMERATE);
             //
 
-            if (param.changeFramerate)
+            if (param.framerate != -1)
             {
                 videoStream.SetFramerate(param.framerate);
             }
@@ -146,7 +155,8 @@ namespace batch_processing.Video
             if (!param.deleteAudio)
                 converion.AddStream(audioStream);
 
-            var res = await converion.Start();
+            var res_task = Task.Run(() => converion.Start());
+            res_task.Wait();
 
             //
             OnProgressChanged(input_path, State.DONE);
@@ -163,9 +173,32 @@ namespace batch_processing.Video
             base.OnProgressChanged(new ProgressEventArgs(path, state.ToString(), currentPercentage, percentage));
         }
 
-        public override string createPreview(Parameters param, string path)
+        public override string createPreview(Parameters param, string path, bool filters)
         {
-            throw new NotImplementedException();
+            string output_path = Common.Constants.Paths.TEMP_PATH;
+            if (!Directory.Exists(output_path))
+                Directory.CreateDirectory(output_path);
+
+            output_path += generateFileName();
+                        
+            return getPreview(path, output_path);
+        }
+
+        private string getPreview(string path, string output_path)
+        {
+            Func<string, string> outputFileNameBuilder = (number) => { return output_path; };
+            
+            var task = Task.Run(() => FFmpeg.GetMediaInfo(path));
+            task.Wait();
+            
+            IMediaInfo inputFile = task.Result;
+
+            IVideoStream videoStream = inputFile.VideoStreams.First();
+
+            var res_task = Task.Run(() => FFmpeg.Conversions.New().AddStream(videoStream).ExtractNthFrame(0, outputFileNameBuilder).Start());
+            res_task.Wait();
+
+            return output_path;
         }
 
         public override List<string> getFilesPattern()

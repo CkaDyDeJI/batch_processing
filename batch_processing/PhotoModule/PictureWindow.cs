@@ -22,8 +22,7 @@ namespace batch_processing.Photo
         {
             if (!pParams.rename)
             {
-                if (MessageBox.Show("You are about to rewrite all original files. Are you sure?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
-                    return;
+                MessageBox.Show("You haven't changed a file names. They are will be written with number postfix (0, 1 and so on).", "Warning", MessageBoxButtons.OK);
             }
 
             base.Run();

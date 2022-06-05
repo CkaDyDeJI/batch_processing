@@ -47,9 +47,12 @@ namespace batch_processing.Audio
             return;
         }
 
-        private async void processFile(string input_path, string output_path, AudioParameters param)
+        private void processFile(string input_path, string output_path, AudioParameters param)
         {
-            IMediaInfo inputFile = await FFmpeg.GetMediaInfo(input_path);
+            var task = Task.Run(() => FFmpeg.GetMediaInfo(input_path));
+            task.Wait();
+
+            IMediaInfo inputFile = task.Result;
 
             //
             OnProgressChanged(input_path, State.PREPARING);
@@ -96,7 +99,8 @@ namespace batch_processing.Audio
             OnProgressChanged(input_path, State.GENERATING);
             //
 
-            var res = await FFmpeg.Conversions.New().AddStream(audioStream).SetOutput(output_path).Start();
+            var res_task = Task.Run(() => FFmpeg.Conversions.New().AddStream(audioStream).SetOutput(output_path).Start());
+            res_task.Wait();
 
             //
             OnProgressChanged(input_path, State.DONE);
@@ -113,7 +117,7 @@ namespace batch_processing.Audio
             base.OnProgressChanged(new ProgressEventArgs(path, state.ToString(), currentPercentage, percentage));
         }
 
-        public override string createPreview(Parameters param, string path)
+        public override string createPreview(Parameters param, string path, bool filters)
         {
             throw new NotImplementedException();
         }
