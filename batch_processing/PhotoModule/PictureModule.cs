@@ -5,7 +5,6 @@ using OpenCvSharp;
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 
 namespace batch_processing.Photo
@@ -130,9 +129,7 @@ namespace batch_processing.Photo
             //
             OnProgressChanged(path, State.WRITING);
             //
-
-            File.Delete(path);
-
+            
             Cv2.ImWrite(out_path, img);
 
             //

@@ -1,4 +1,4 @@
-﻿using DevExpress.XtraEditors; 
+﻿using DevExpress.XtraEditors;
 
 using System;
 using System.Drawing;
@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace batch_processing
 {
-    
+
     public partial class MainForm : Form
     {
         public MainForm()

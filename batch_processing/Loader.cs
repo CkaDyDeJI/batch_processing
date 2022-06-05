@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Xabe.FFmpeg.Downloader;
@@ -30,7 +26,8 @@ namespace batch_processing
 
         void GetAdditionalLibraries()
         {
-            FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official);
+            var task = Task.Run(() => FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official));
+            task.Wait();
         }
 
         void Run()

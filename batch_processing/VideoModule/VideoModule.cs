@@ -2,15 +2,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Xabe.FFmpeg;
-using Xabe.FFmpeg.Events;
 
 namespace batch_processing.Video
 {

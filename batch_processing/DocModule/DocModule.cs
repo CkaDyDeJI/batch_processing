@@ -1,5 +1,4 @@
 ﻿using Aspose.Words;
-using Aspose.Words.Layout;
 
 using batch_processing.Common;
 
@@ -7,15 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace batch_processing.Doc
 {
     internal class DocModule : Common.ProcessModule
     {
-        static List<string> pattern = new List<string> { "*.doc", "*.docx" };
+        static List<string> pattern = new List<string> { "*.docx" };
         int currentPercentage;
 
         enum State { PREPARING = 0, WATERMARK, MERGING, AUTHORING, PAGESETUPING, DONE, UNKNOWN = -1 };
@@ -24,6 +20,21 @@ namespace batch_processing.Doc
         {
             ModuleName = "Document";
             DefaultExt = ".docx";
+        }
+
+        public bool LicenseIt()
+        {
+            try
+            {
+                License license = new License();
+                license.SetLicense(@"License.txt");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public override string createPreview(Parameters param, string path, bool filters)

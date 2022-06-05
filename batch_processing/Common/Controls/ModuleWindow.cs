@@ -3,12 +3,8 @@
 using DevExpress.XtraEditors;
 
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace batch_processing
@@ -68,8 +64,7 @@ namespace batch_processing
         {
             listCntrol.setWorkingDir(path);
         }
-
-        public override void Run()
+                public override void Run()
         {
             pModule.process(pParams, listCntrol.getSelectedFiles());
         }
@@ -150,6 +145,10 @@ namespace batch_processing
         {
             imageEdit.Image?.Dispose();
             imageEdit.Image = null;
+            GC.Collect();
+
+            if (!Directory.Exists(Common.Constants.Paths.TEMP_PATH))
+                return;
 
             DirectoryInfo dir = new DirectoryInfo(Common.Constants.Paths.TEMP_PATH);
             var files_list = dir.GetFiles();

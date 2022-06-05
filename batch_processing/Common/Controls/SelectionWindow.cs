@@ -1,11 +1,6 @@
-﻿using DevExpress.Utils.Layout;
-using DevExpress.XtraEditors;
+﻿using DevExpress.XtraEditors;
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace batch_processing.Common
